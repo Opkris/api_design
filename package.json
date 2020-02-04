@@ -1,0 +1,45 @@
+{
+  "babel": {
+    "plugins": [
+      "@babel/plugin-proposal-class-properties"
+    ],
+    "presets": [
+      "@babel/env",
+      "@babel/react"
+    ]
+  },
+  "dependencies": {
+    "jsdom": "latest",
+    "name": "^0.0.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "test": "^0.6.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.7.4",
+    "@babel/core": "7.7.4",
+    "@babel/plugin-proposal-class-properties": "7.7.4",
+    "@babel/preset-env": "7.7.4",
+    "@babel/preset-react": "7.7.4",
+    "babel-jest": "24.9.0",
+    "babel-loader": "8.0.6",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "jest": "^25.1.0",
+    "webpack": "4.41.2",
+    "webpack-cli": "3.3.10",
+    "webpack-dev-server": "3.9.0"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**.(js|jsx)"
+    ],
+    "testRegex": "tests/.*-test\\.(js|jsx)$"
+  },
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack-dev-server --open --mode development",
+    "test": "jest --coverage"
+  },
+  "version": "1.0.0"
+}

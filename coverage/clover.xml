@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1580804194215" clover="3.2.0">
+  <project timestamp="1580804194215" name="All files">
+    <metrics statements="25" coveredstatements="14" conditionals="8" coveredconditionals="6" methods="7" coveredmethods="2" elements="40" coveredelements="22" complexity="0" loc="25" ncloc="25" packages="1" files="3" classes="3"/>
+    <file name="index.jsx" path="C:\Users\krist\WebstormProjects\api_design\src\index.jsx">
+      <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <line num="10" count="0" type="stmt"/>
+    </file>
+    <file name="match.jsx" path="C:\Users\krist\WebstormProjects\api_design\src\match.jsx">
+      <metrics statements="10" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="5" coveredmethods="0"/>
+      <line num="8" count="0" type="stmt"/>
+      <line num="10" count="0" type="stmt"/>
+      <line num="14" count="0" type="stmt"/>
+      <line num="15" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="16" count="0" type="stmt"/>
+      <line num="17" count="0" type="stmt"/>
+      <line num="19" count="0" type="stmt"/>
+      <line num="25" count="0" type="stmt"/>
+      <line num="30" count="0" type="stmt"/>
+      <line num="32" count="0" type="stmt"/>
+    </file>
+    <file name="quizzes.js" path="C:\Users\krist\WebstormProjects\api_design\src\quizzes.js">
+      <metrics statements="14" coveredstatements="14" conditionals="6" coveredconditionals="6" methods="2" coveredmethods="2"/>
+      <line num="1" count="2" type="stmt"/>
+      <line num="57" count="104" type="cond" truecount="2" falsecount="0"/>
+      <line num="58" count="2" type="stmt"/>
+      <line num="61" count="102" type="cond" truecount="2" falsecount="0"/>
+      <line num="62" count="1" type="stmt"/>
+      <line num="65" count="101" type="stmt"/>
+      <line num="67" count="101" type="stmt"/>
+      <line num="68" count="101" type="stmt"/>
+      <line num="70" count="227" type="stmt"/>
+      <line num="71" count="227" type="cond" truecount="2" falsecount="0"/>
+      <line num="72" count="26" type="stmt"/>
+      <line num="75" count="201" type="stmt"/>
+      <line num="76" count="201" type="stmt"/>
+      <line num="79" count="201" type="stmt"/>
+    </file>
+  </project>
+</coverage>
