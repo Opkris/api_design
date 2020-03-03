@@ -1,4 +1,4 @@
-const quizzes = [
+export const quizzes = [
     {
         question: "What kind of language is JavaScript?",
         answers: [
@@ -7,7 +7,9 @@ const quizzes = [
             "Weakly and statically typed",
             "Weakly and dynamically typed",
         ],
-        indexOfRightAnswer: 3
+        indexOfRightAnswer: 3,
+        id: 0
+
     },
     {
         question: "In JavaScript, what is the result of the following?\n\n+(!![]+!![]+!![]+!![]+[]+(!![]+!![]))",
@@ -17,7 +19,8 @@ const quizzes = [
             "42",
             "'42'"
         ],
-        indexOfRightAnswer: 2
+        indexOfRightAnswer: 2,
+        id: 1
     },
     {
         question: "In JavaScript, what is the result of the following?\n\n[3,18,1,2].sort()\n",
@@ -27,7 +30,8 @@ const quizzes = [
             "[18, 1, 2, 3]",
             "Runtime exception"
         ],
-        indexOfRightAnswer: 1
+        indexOfRightAnswer: 1,
+        id: 2
     },
     {
         question: "In JavaScript, what is the result  of the following?\n\nfalse + true?",
@@ -37,7 +41,8 @@ const quizzes = [
             "'falsetrue'",
             "1"
         ],
-        indexOfRightAnswer: 3
+        indexOfRightAnswer: 3,
+        id: 3
     },
     {
         question: "What is Babel mainly used for?",
@@ -47,11 +52,34 @@ const quizzes = [
             "To download third-party dependencies",
             "To run tests cases"
         ],
-        indexOfRightAnswer: 0
+        indexOfRightAnswer: 0,
+        id: 4
+    },
+    {
+        question:" What is SEO?",
+        answers:[
+          "Search Educe Organization",
+          "Search Educe Optimization",
+          "Search Engine Optimization",
+          "Search Engine Organization"
+        ],
+        indexOfRightAnswer: 2,
+        id: 5
+    },
+    {
+        question:" What is SPA",
+        answers:[
+          "Search Partner Application",
+          "Single Page Application",
+          "Search Page Advice",
+          "Search Paragraph Applicant"
+        ],
+        indexOfRightAnswer: 1,
+        id: 6
     }
 ];
 
-
+/*
 export function getRandomQuizzes(numberOfQuizzes){
 
     if(numberOfQuizzes < 1){
@@ -77,6 +105,42 @@ export function getRandomQuizzes(numberOfQuizzes){
     }
 
     return Array.from(selection).map(e => quizzes[e]);
+}*/
+
+export async function getRandomQuizzes(numberOfQuizzes){
+
+    if(numberOfQuizzes < 1){
+        throw "Invalid number of requested quizzes: " + n;
+    }
+
+    const url = "https://opentdb.com/api.php?type=multiple&amount=" + numberOfQuizzes;
+    let response;
+    let payload;
+
+    try{
+        response = await fetch(url);
+        payload = await response.json();
+    }catch (err){
+        return null;
+    }
+
+    if (response.status !== 200){
+        return null;
+    }
+
+    return payload.results.map(q => {
+
+        const correct = Math.floor(Math.random() * Math.floor(3));
+        const answers = q.incorrect_answers;
+        answers.splice(correct, 0, q.correct_answer);
+
+        return {
+            question: q.question,
+            answers: answers,
+            indexOfRightAnswer: correct,
+            id: 0
+        };
+    })
 }
 
 
