@@ -3,7 +3,6 @@
 const {configure } = require('enzyme');
 const jsdom = require('jsdom');
 const Adapter = require('enzyme-adapter-react-16');
-// npm i --save-dev enzyme
 
 
 /*
@@ -17,7 +16,7 @@ const Adapter = require('enzyme-adapter-react-16');
 
 export function setUpDomEnvironment(port) {
     const { JSDOM } = jsdom;
-    const dom = new JSDOM('<!doctype html><html><body></body></html>', {url: 'http://localhost:'+port+"/"});
+    const dom = new JSDOM('<!doctype html><html><body></body></html>', {url: 'http://localhost:'+ port +"/"});
     const { window } = dom;
 
     global.window = window;

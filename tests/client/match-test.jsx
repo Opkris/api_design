@@ -1,7 +1,10 @@
 const React = require('react');
 const {mount} = require('enzyme');
-const {Match} = require("../src/client/match");
-const {quizzes} = require("../src/server/db/quizzes");
+const {Match} = require("../../src/client/match");
+const {quizzes} = require("../../src/server/db/quizzes");
+const {overrideFetch, asyncCheckCondition} = require('../mytest-utils');
+const app = require('../../src/server/app');
+const {resetAllUsers} = require('../../src/server/db/users');
 
 {
     /*
@@ -24,22 +27,45 @@ const {quizzes} = require("../src/server/db/quizzes");
     */
 }
 
-function quizIsDisplayed(displayQuiz){
+
+beforeEach(() => {
+    resetAllUsers();
+});
+
+
+    async function signup(userId, password) {
+        const response = await fetch('/api/signup', {
+                method: "post",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({userId: userId, password: password})
+            }
+        );
+
+        return response.status === 201;
+    }
+
+
+function isQuizDisplayed(driver){
+
+    const quiz = driver.find('.quiz');
 
     // Check if we can display the question and only 1 at the time.
-    const questions = displayQuiz.find('.question');
-    expect(questions.length).toEqual(1);
+    const questions = driver.find('.question');
+    // expect(questions.length).toEqual(1);
 
     //check if we can display the answers as well.
     // .answer is referred to "renderAnswerTag " class name.
-    const answers = displayQuiz.find('.answer');
-    expect(answers.length).toEqual(4);
+    const answers = driver.find('.answer');
+    // expect(answers.length).toEqual(4);
 
+    return quiz.length === 1 && questions.length === 1 && answers.length === 4;
 }
 
 function getDisplayedQuiz(driver){
 
-    const quizDiv = driver.find('.answer').at(0);
+    const quizDiv = driver.find('.quiz').at(0);
     const html_id = quizDiv.prop('id');
     const id = parseInt(html_id.substring("quiz_".length, html_id.length));
 
@@ -47,11 +73,98 @@ function getDisplayedQuiz(driver){
     return quiz;
 }
 
-test("Test rendered quiz", () => {
+async function waitForQuizDisplayed(driver){
+
+    const displayed = await asyncCheckCondition(() => {
+        driver.update();
+        return isQuizDisplayed(driver);
+    }, 2000, 200);
+
+    return displayed;
+}
+
+test("Test rendered quiz", async () => {
+
+    overrideFetch(app);
 
     const driver = mount(<Match/>);
 
-    quizIsDisplayed(driver);
+    const displayed = await waitForQuizDisplayed(driver);
+
+    expect(displayed).toEqual(true);
+});
+
+    /*
+        const driver = mount(<Match/>);
+
+        isQuizDisplayed(driver);
+
+        const quiz = getDisplayedQuiz(driver);
+        const wrong = (quiz.indexOfRightAnswer + 1) % 4;
+
+        const first = driver.find('.answer').at(wrong);
+        first.simulate('click');
+
+        const lost = driver.html().include("Lost");
+        const won = driver.html().include("Won");
+
+        expect(lost).toEqual(true);
+        expect(won).toEqual(false);
+    */
+
+
+    test("Test do answer correctly", async () => {
+
+        overrideFetch(app);
+
+        const driver = mount(<Match/>);
+
+        await waitForQuizDisplayed(driver);
+
+        const quiz = getDisplayedQuiz(driver);
+        const correct = quiz.indexOfRightAnswer;
+
+        const first = driver.find('.answer').at(correct);
+        first.simulate('click');
+
+        const lost = driver.html().includes("Lost");
+        const won = driver.html().includes('Won');
+
+        expect(lost).toEqual(false);
+        expect(won).toEqual(false);
+
+
+        const displayed = await waitForQuizDisplayed(driver);
+        expect(displayed).toEqual(true);
+
+
+        /*
+            const driver = mount(<Match/>);
+
+            isQuizDisplayed(driver);
+
+            const quiz = getDisplayedQuiz(driver);
+            const correct = quiz.indexOfRightAnswer;
+
+            const first = driver.find('.answer').at(correct);
+            first.simulate('click');
+
+            const lost = driver.html().include("Lost");
+            const won = driver.html().include("Won");
+
+            expect(lost).toEqual(false);
+            expect(won).toEqual(false);
+
+            isQuizDisplayed(driver);
+        */
+    });
+test("Test do answer wrong", async () => {
+
+    overrideFetch(app);
+
+    const driver = mount(<Match/>);
+
+    await waitForQuizDisplayed(driver);
 
     const quiz = getDisplayedQuiz(driver);
     const wrong = (quiz.indexOfRightAnswer + 1) % 4;
@@ -59,52 +172,64 @@ test("Test rendered quiz", () => {
     const first = driver.find('.answer').at(wrong);
     first.simulate('click');
 
-    const lost = driver.html().include("Lost");
-    const won = driver.html().include("Won");
+    const lost = driver.html().includes("Lost");
+    const won = driver.html().includes("Won");
 
     expect(lost).toEqual(true);
     expect(won).toEqual(false);
-
 });
 
-    test("Test do answer correctly", () => {
 
-        const driver = mount(<Match/>);
 
-        quizIsDisplayed(driver);
 
-        const quiz = getDisplayedQuiz(driver);
-        const correct = quiz.indexOfRightAnswer;
+    test("Test win match", async () =>{
+  //test("Test win match", async () => {
 
-        const first = driver.find('.answer').at(correct);
-        first.simulate('click');
+            overrideFetch(app);
 
-        const lost = driver.html().include("Lost");
-        const won = driver.html().include("Won");
+            const driver = mount(<Match/>);
 
-        expect(lost).toEqual(false);
-        expect(won).toEqual(false);
+            await waitForQuizDisplayed(driver);
 
-        quizIsDisplayed(driver);
+            for (let i = 0; i < 3; i++) {
+                const quiz = getDisplayedQuiz(driver);
+                const correct = quiz.indexOfRightAnswer;
 
-    });
+                const first = driver.find('.answer').at(correct);
+                first.simulate('click');
 
-test("Test win match", () =>{
+                driver.update();
 
-    const driver =mount(<Match/>);
+                /*
+                    Note: to be precise, here we should wait until a new Quiz is displayed, or the Win/Lose page,
+                    however, as those do not require any async operation in the app,
+                    then we should still be fine in this case even without an explicit wait
+                */
+            }
+            const lost = driver.html().includes("Lost");
+            const won = driver.html().includes('Won');
 
-    for (let i = 0; i < 3; i++) {
-        quizIsDisplayed(driver);
+            expect(lost).toEqual(false);
+            expect(won).toEqual(true);
 
-        const quiz = getDisplayedQuiz(driver);
-        const correct = quiz.indexOfRightAnswer;
 
-        const first = driver.find('.answer').at(correct);
-        first.simulate('click');
-    }
-    const lost = driver.html().include("Lost");
-    const won = driver.html().include("Won");
+            /*
+                 const driver =mount(<Match/>);
 
-    expect(lost).toEqual(false);
-    expect(won).toEqual(true);
-})
+                 for (let i = 0; i < 3; i++) {
+                     isQuizDisplayed(driver);
+
+                     const quiz = getDisplayedQuiz(driver);
+                     const correct = quiz.indexOfRightAnswer;
+
+                     const first = driver.find('.answer').at(correct);
+                     first.simulate('click');
+                 }
+                 const lost = driver.html().include("Lost");
+                 const won = driver.html().include("Won");
+
+                 expect(lost).toEqual(false);
+                 expect(won).toEqual(true);
+             */
+        });
+

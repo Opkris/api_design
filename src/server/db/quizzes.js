@@ -1,4 +1,4 @@
-export const quizzes = [
+const quizzes = [
     {
         question: "What kind of language is JavaScript?",
         answers: [
@@ -107,13 +107,39 @@ export function getRandomQuizzes(numberOfQuizzes){
     return Array.from(selection).map(e => quizzes[e]);
 }*/
 
-export async function getRandomQuizzes(numberOfQuizzes){
+function getRandomQuizzes(numberOfQuizzes){
 
     if(numberOfQuizzes < 1){
         throw "Invalid number of requested quizzes: " + n;
     }
 
-    const url = "https://opentdb.com/api.php?type=multiple&amount=" + numberOfQuizzes;
+    if(numberOfQuizzes > quizzes.length){
+        throw "Too many quizzes"
+    }
+
+    const selection = Array(numberOfQuizzes);
+
+    let i = 0;
+    while (i < numberOfQuizzes){
+
+        const k = Math.floor(quizzes.length * Math.random());
+        if(selection.includes(k)){
+            continue;
+        }
+
+        selection[i] = k;
+        i++;
+    }
+
+    return Array.from(selection).map( e=> quizzes[e]);
+}
+
+module.exports = {quizzes, getRandomQuizzes};
+
+
+
+
+   /* const url = "https://opentdb.com/api.php?type=multiple&amount=" + numberOfQuizzes;
     let response;
     let payload;
 
@@ -141,6 +167,6 @@ export async function getRandomQuizzes(numberOfQuizzes){
             id: 0
         };
     })
-}
+}*/
 
 
