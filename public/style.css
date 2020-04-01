@@ -1,104 +1,17 @@
-
-body{
-    background-color:#333333;
-}
-p{
-    color: white;
-}
-/* #ebd69a */
-.container {
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    align-items: center;
-}
-.headerBar{
-    text-align: center;
+body {
+    background-color: #2c2c2c;
 }
 
-.heading {
-    font-size: 4em;
-    margin: 2rem 0;
-    text-align: center;
-    background-color: #333333;
-    color: white;
-    border: 2px solid goldenrod;
-    border-radius: 50%;
-    padding: 30px;
+#root {
+    margin: 30px;
 }
 
-.question {
-    color: white;
-    font-size: 1.5em;
-    font-weight: bold;
-}
-
-.answer {
-    background-color: #7f7f7f;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    border: 1.5px solid goldenrod;
-    border-radius: 5px;
-    width: 80%;
-}
-
-.play{
-
-    font-size: 20px;
-    font-weight: bold;
-    color: green;
-
-}
-.welcome-text{
-
-    color: white;
-    font-size: 20px;
-}
-.game-result{
-    font-style: italic;
-    font-weight: bolder;
-}
-
-.play-new-game-button{
-
-
-    background-color: #333333;
-    color: white;
-    border: 1px solid goldenrod;
-    font-weight: bold;
-    padding: 5px 10px;
-    white-space: nowrap;
-    position: relative;
-    float: left;
-    left: -25px;
-
-
-
-}
-.home-title{
-    color: white;
-    border-bottom: 2px solid goldenrod;
-}
-
-.quiz{
-    font-style: italic;
-}
-.action{
-    display: flex;
-    text-align: center;
-    align-items: center;
-    border-bottom: 2px solid goldenrod;
-    width: 120px;
-    height: 30px;
-    padding: 20px;
-    border-radius: 50%;
-}
 
 .quizBtn {
     height: 50px;
-    background-color: rgb(207, 205, 200);
+    background-color: bisque;
     font-size: 1em;
-    border: 2px solid red;
+    border: 2px solid goldenrod;
     border-radius: 5px;
     margin: 5px;
     cursor: pointer;
@@ -109,60 +22,107 @@ p{
     margin-right: 5%;
 }
 
-.header-text{
-    font-size: 30px;
-    color: gray;
-    font-style: italic;
-    font-weight: bolder;
+
+.quizQuestion {
+    display: inline-block;
+    font-size: 1em;
+    font-weight: bold;
 }
 
-.notLoggedInMessage {
+.headerBar {
+    margin-top: 30px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid goldenrod;
+    height: 50px;
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-evenly;
+}
+
+.msgDiv {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 40%;
+}
+.notLoggedInMsg {
     justify-self: flex-start;
-    font-size: 2em;
-    color: white;
-    padding: 10px;
+    color: #6b6966;
+    size: 40em;
+
 }
 .home {
     float: left;
 }
-.btnPart {
-    margin-left: -7px;
+.btnPartHeader {
+    float: left;
+    margin: 30px;
 }
+
+.index {
+    float: left;
+    font-size: 12px;
+    text-align: center;
+    width: 30px;
+    border: 1px solid transparent;
+    margin-right: -1px;
+    margin-top: -1px;
+}
+
+.cell-row:after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.cell {
+    float: left;
+    background: white;
+    border: 1px solid gray;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 30px;
+    height: 30px;
+    width: 30px;
+    margin-right: -1px;
+    margin-top: -1px;
+}
+
 .cell-victory {
-    background: lightskyblue;
+    background: green;
 }
 
 .cell-defeat {
-    background: blue;
+    background: red;
 }
 
 .cell-to-insert {
     background: yellow;
 }
 
+.game {
+    display: flex;
+    flex-direction: row;
+}
+
+.game-info {
+    margin-top: 30px;
+    margin-left: 20px;
+    font-weight: bold;
+}
+.btnPart {
+    display: inline-flex;
+}
 .btn {
     width: 90px;
     height: 20px;
-    background-color: black;
-    color: white;
+    background-color: rgb(155, 155, 155);
+    color: black;
     font-size: 1em;
     text-align: center;
     padding: 5px;
-    border: 1px solid goldenrod;
-    border-radius: 5px;
-    margin: 5px;
-    cursor: pointer;
-    text-decoration: none;
-}
-.button{
-    width: 90px;
-    height: 30px;
-    background-color: black;
-    color: white;
-    font-size: 1em;
-    text-align: center;
-    padding: 5px;
-    border: 1px solid goldenrod;
+    border: 2px solid goldenrod;
     border-radius: 5px;
     margin: 5px;
     cursor: pointer;
@@ -176,28 +136,21 @@ p{
     font-size: 1em;
     text-align: center;
     padding: 5px;
-    border: 2px solid green;
+    border: 2px solid rgb(153, 153, 153);
     border-radius: 5px;
     margin: 5px;
     cursor: pointer;
 }
-.homebtn {
-    width: 90px;
-    height: 90px;
-    border: 1px solid goldenrod;
+.homeText{
     color: white;
-    background-color: black;
-    font-size: 1em;
-    padding: 5px;
-    text-decoration: none;
-    border-radius: 5px;
+
 }
 
-.registerbtn{
-    color: white;
-    font-style: italic;
-}
-
-.center{
+h2{
+    color: goldenrod;
+    size: 150px;
     text-align: center;
+}
+p{
+    color: white;
 }

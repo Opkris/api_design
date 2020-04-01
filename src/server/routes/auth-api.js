@@ -14,47 +14,48 @@ router.post('/signup', function (req, res) {
 
     const created = Users.createUser(req.body.userId, req.body.password);
 
-    if(!created){
-        // User have done something "wrong"
+    if (!created) {
         res.status(400).send();
         return;
     }
 
     passport.authenticate('local')(req, res, () => {
-        req.session.save((error) => {
-            if(error){
-                // something went wrong from det server/db side
+        req.session.save((err) => {
+            if (err) {
+                //shouldn't really happen
                 res.status(500).send();
-            }else{
+            } else {
                 res.status(201).send();
             }
         });
     });
 });
 
-router.post('/logout', function (req, res){
+router.post('/logout', function (req, res) {
 
     req.logout();
     res.status(204).send();
 });
 
-/*
-    just return the id of the user, if the request is
-    authenticated with a valid session cookie
-*/
 
+/*
+    Just return the id of the user, if the request is
+    authenticated with a valid session cookie
+ */
 router.get('/user', function (req, res) {
 
-    if(!req.user){
+    if (!req.user) {
         res.status(401).send();
         return;
     }
 
     res.status(200).json({
-        id: req.user.id,
-        victories: req.user.victories,
-        defeats: req.user.defeats
-    });
+            id: req.user.id,
+            victories: req.user.victories,
+            defeats: req.user.defeats
+        }
+    );
 });
+
 
 module.exports = router;

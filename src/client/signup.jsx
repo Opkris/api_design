@@ -1,5 +1,5 @@
 import React from 'react';
-import {withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom'
 
 class SignUp extends React.Component{
 
@@ -10,20 +10,20 @@ class SignUp extends React.Component{
             userId: "",
             password: "",
             confirm: "",
-            errorMessage: null
+            errorMsg: null
         };
     }
 
     onUserIdChange = (event) => {
-        this.setState({userId: event.target.value, errorMessage: null});
+        this.setState({userId: event.target.value, errorMsg: null});
     };
 
     onPasswordChange = (event) => {
-        this.setState({password: event.target.value, errorMessage: null});
+        this.setState({password: event.target.value, errorMsg: null});
     };
 
     onConfirmChange = (event) => {
-        this.setState({confirm: event.target.value, errorMessage: null});
+        this.setState({confirm: event.target.value, errorMsg: null});
     };
 
     doSignUp = async () => {
@@ -31,7 +31,7 @@ class SignUp extends React.Component{
         const {userId, password, confirm} = this.state;
 
         if(confirm !== password){
-            this.setState({errorMessage: "Passwords do not match"});
+            this.setState({errorMsg: "Passwords do not match"});
             return;
         }
 
@@ -49,23 +49,23 @@ class SignUp extends React.Component{
                 },
                 body: JSON.stringify(payload)
             });
-        } catch (error) {
-            this.setState({errorMessage: "Failed to connect to server: " + error});
+        } catch (err) {
+            this.setState({errorMsg: "Failed to connect to server: "+ err});
             return;
         }
 
 
         if(response.status === 400){
-            this.setState({errorMessage: "Invalid userId/password"});
+            this.setState({errorMsg: "Invalid userId/password"});
             return;
         }
 
         if(response.status !== 201){
-            this.setState({errorMessage: "Error when connecting to server: status code "+ response.status});
+            this.setState({errorMsg: "Error when connecting to server: status code "+ response.status});
             return;
         }
 
-        this.setState({errorMessage: null});
+        this.setState({errorMsg: null});
         await this.props.fetchAndUpdateUserInfo();
         this.props.history.push('/');
     };
@@ -73,45 +73,40 @@ class SignUp extends React.Component{
     render(){
 
         let error = <div></div>;
-        if(this.state.errorMessage){
-            error =(<div className="errorMessage"><p>{this.state.errorMessage}</p></div>);
+        if(this.state.errorMsg){
+            error = <div className="errorMsg"><p>{this.state.errorMsg}</p></div>
         }
 
-        let confirmMessage = "Ok";
+        let confirmMsg = "Ok";
         if(this.state.confirm !== this.state.password){
-            confirmMessage = "Not matching";
+           confirmMsg = "Not matching";
         }
 
         return(
-            <div className="center">
+            <div>
                 <div>
                     <p>User Id:</p>
                     <input type="text"
                            value={this.state.userId}
-                           onChange={this.onUserIdChange}
-                    />
+                           onChange={this.onUserIdChange}/>
                 </div>
                 <div>
                     <p>Password:</p>
                     <input type="password"
                            value={this.state.password}
-                           onChange={this.onPasswordChange}
-                    />
+                           onChange={this.onPasswordChange}/>
                 </div>
                 <div>
                     <p>Confirm:</p>
                     <input type="password"
                            value={this.state.confirm}
-                           onChange={this.onConfirmChange}
-                    />
-                    <div>{confirmMessage}</div>
+                           onChange={this.onConfirmChange}/>
+                    <div>{confirmMsg}</div>
                 </div>
 
                 {error}
 
-                <button className="button" onClick={this.doSignUp}>
-                    Sign Up
-                </button>
+                <div className="btn" onClick={this.doSignUp}>Sign Up</div>
             </div>
         );
     }

@@ -1,19 +1,20 @@
 import React from 'react';
-import {Link, withRouter} from "react-router-dom";
+import {Link, withRouter} from 'react-router-dom';
+
 
 class Login extends React.Component{
 
-    constructor(props) {
+    constructor(props){
         super(props);
 
         this.state = {
             userId: "",
             password: "",
-            errorMessage: null
+            errorMsg: null
         };
     }
 
-    onUserIdChange = (event) => {
+    onUserIdChange = (event) =>{
         this.setState({userId: event.target.value});
     };
 
@@ -34,70 +35,61 @@ class Login extends React.Component{
             response = await fetch(url, {
                 method: "post",
                 headers: {
-                    "Content-Type": "application/json"
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(payload)
             });
-        }catch (error) {
-            this.setState({errorMessage: "Failed to connect to server: " + error});
+        } catch (err) {
+            this.setState({errorMsg: "Failed to connect to server: "+ err});
             return;
         }
 
-        if(response.state === 401){
-            this.setState({errorMessage: "Invalid userId/password"});
-			return;
+
+        if(response.status === 401){
+            this.setState({errorMsg: "Invalid userId/password"});
+            return;
         }
 
-        if(response.state === 204){
-            this.setState({
-                errorMessage: "Error when connecting to server: status code " + response.status});
-			return;
+        if(response.status !== 204){
+            this.setState({errorMsg: "Error when connecting to server: status code "+ response.status});
+            return;
         }
 
-        this.setState({errorMessage: null});
+        this.setState({errorMsg: null});
         await this.props.fetchAndUpdateUserInfo();
         this.props.history.push('/');
     };
 
+
     render(){
 
         let error = <div></div>;
-        if(this.state.errorMessage){
-            error = (
-                <div className="errorMessage">
-                    <p>{this.state.errorMessage}</p>
-                </div>
-            );
+        if(this.state.errorMsg){
+            error = <div className="errorMsg"><p>{this.state.errorMsg}</p></div>
         }
 
+
         return(
-            <div className="center">
+            <div>
                 <div>
                     <p>User Id:</p>
                     <input type="text"
-                       value={this.state.userId}
-                       onChange={this.onUserIdChange}
-                    />
+                           value={this.state.userId}
+                           onChange={this.onUserIdChange}/>
                 </div>
                 <div>
                     <p>Password:</p>
                     <input type="password"
                            value={this.state.password}
-                           onChange={this.onPasswordChange}
-                    />
+                           onChange={this.onPasswordChange}/>
                 </div>
 
                 {error}
 
-                <button className="button" onClick={this.doLogIn}>
-                    Login
-                </button>
-                {/*<link className="button" to={"/signup"}>*/}
-                {/*    Register*/}
-                {/*</link>*/}
-            </div>
-        );
-    }// end render
-}// end class Login
+                <div className="btn" onClick={this.doLogIn}>Log In</div>
+                <Link to={"/signup"}>Register</Link>
+            </div>);
+    }
+}
 
 export default withRouter(Login);

@@ -1,31 +1,35 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const session = require('express-session');
+const session = require("express-session");
 const LocalStrategy = require('passport-local').Strategy;
-
-const authApi = require('./router/auth-api');
 const path = require('path');
-const matchApi = require('./router/match-api');
+
+const authApi = require('./routes/auth-api');
+const matchApi = require('./routes/match-api');
 const Users = require('./db/users');
-// const matchApi = require('./routes/match-api');
+
+const WsHandler = require('./ws-handler');
+
 
 const app = express();
 
 //to handle JSON payloads
 app.use(bodyParser.json());
 
+WsHandler.init(app);
+
+
 app.use(session({
-    secret: "a Secret user to encrypt the session cookies",
+    secret: 'a secret used to encrypt the session cookies',
     resave: false,
     saveUninitialized: false
 }));
 
+
 //needed to server static files, like HTML, CSS and JS.
 app.use(express.static('public'));
 
-
-/*This part will crash the node: app crashed - waiting for file changes before starting .....    */
 
 passport.use(new LocalStrategy(
     {
@@ -65,15 +69,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-/** Routes **/
+//--- Routes -----------
 app.use('/api', authApi);
 app.use('/api', matchApi);
 
-app.use(express.static('public'));
-
+//handling 404
 app.use((req, res, next) => {
     res.sendFile(path.resolve(__dirname, '..', '..', 'public', 'index.html'));
 });
 
-
-module.exports = app;
+module.exports = {app};
