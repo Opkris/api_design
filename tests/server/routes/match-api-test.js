@@ -15,7 +15,7 @@ test("Test create match with auth", async () =>{
     const user = request.agent(app);
 
     const signup = await user.post('/api/signup')
-        .send({userId:'match_auth_foo', password:"bar"})
+        .send({userId:'im_A_Test_Person', password:"pw1337"})
         .set('Content-Type', 'application/json');
 
     expect(signup.statusCode).toBe(201);
@@ -24,3 +24,6 @@ test("Test create match with auth", async () =>{
 
     expect(response.statusCode).toBe(201);
 });
+
+
+

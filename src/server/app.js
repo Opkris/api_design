@@ -69,7 +69,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-//--- Routes -----------
+/** --------- Routes ---------**/
 app.use('/api', authApi);
 app.use('/api', matchApi);
 

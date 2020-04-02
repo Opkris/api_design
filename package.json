@@ -50,11 +50,11 @@
     "webpack-dev-server": "3.9.0"
   },
   "engines": {
-    "node": "^11.0.0"
+    "node": "^13.0.0"
   },
   "jest": {
     "collectCoverageFrom": [
-      "src/**.(js|jsx)"
+      "src/**/*.(js|jsx)"
     ],
     "setupFilesAfterEnv": [
       "<rootDir>/tests/jest-setup.js"
