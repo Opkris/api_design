@@ -149,7 +149,7 @@ export class Match extends React.Component {
         if (this.state.match.victory) {
             return (
                 <div>
-                    <h2>Congrats !! You Won!</h2>
+                    <h2 className={"youWon"}>Congrats !! You Won!</h2>
                     <div className="btn" onClick={this.startNewMatch}>New Match</div>
                     {this.props.user ? this.victoriesDefeatsDiv() : <div/>}
                 </div>
@@ -159,7 +159,7 @@ export class Match extends React.Component {
         if (this.state.match.defeat) {
             return (
                 <div>
-                    <h2>Wrong Answer! You Lost!</h2>
+                    <h2 className={"youLost"}>Wrong Answer! You Lost!</h2>
                     <div className="btn" onClick={this.startNewMatch}>New Match</div>
                     {this.props.user ? this.victoriesDefeatsDiv() : <div/>}
                 </div>

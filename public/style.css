@@ -154,3 +154,9 @@ h2{
 p{
     color: white;
 }
+.youWon{
+    color: green;
+}
+.youLost{
+    color: red;
+}
